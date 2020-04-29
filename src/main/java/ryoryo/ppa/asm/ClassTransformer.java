@@ -12,6 +12,8 @@ import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRema
 
 public class ClassTransformer implements IClassTransformer, Opcodes
 {
+	private static final String ASM_HOOKS = "ryoryo/ppa/asm/ModHooks";
+
 	private static final String TARGET_CLASS = "net.minecraft.block.BlockPumpkin";
 
 	public ClassTransformer()
@@ -41,7 +43,7 @@ public class ClassTransformer implements IClassTransformer, Opcodes
 		if(!TARGET_CLASS.equals(transformedName))
 			return basicClass;
 
-		LoadingPlugin.LOGGER.info("Found: BlockPumpkin; start transforming------------------");
+		LoadingPlugin.LOGGER.info("Found: " + transformedName + "; start transforming------------------");
 
 		//byte配列を読み込み、利用しやすい形にする。
 		ClassReader reader = new ClassReader(basicClass);
@@ -70,9 +72,12 @@ public class ClassTransformer implements IClassTransformer, Opcodes
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions)
 		{
-			if(TARGET_METHOD.equals(FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(this.owner, name, desc)))
+			if(TARGET_METHOD.equals(FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(this.owner, name, desc))
+				|| TARGET_METHOD_DEOBF.equals(FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(this.owner, name, desc))
+				|| name.equals(TARGET_METHOD)
+				|| name.equals(TARGET_METHOD_DEOBF))
 			{
-				LoadingPlugin.LOGGER.info("Found: canPlaceBlockAt; start transforming");
+				LoadingPlugin.LOGGER.info("Found: " + name + "; start transforming");
 				return new CustomMethodVisitor(this.api, super.visitMethod(access, name, desc, signature, exceptions));
 			}
 
@@ -149,12 +154,12 @@ public class ClassTransformer implements IClassTransformer, Opcodes
 			visitor.visitVarInsn(ALOAD, 1);
 			visitor.visitVarInsn(ALOAD, 2);
 			visitor.visitMethodInsn(INVOKESTATIC,
-					"ryoryo/ppa/asm/ModHooks",
-					"pumpkinHook",
-					Type.getMethodDescriptor(Type.BOOLEAN_TYPE,
-											Type.getObjectType("net/minecraft/world/World"),
-											Type.getObjectType("net/minecraft/util/math/BlockPos")),
-					false);
+									ASM_HOOKS,
+									"pumpkinHook",
+									Type.getMethodDescriptor(Type.BOOLEAN_TYPE,
+															Type.getObjectType("net/minecraft/world/World"),
+															Type.getObjectType("net/minecraft/util/math/BlockPos")),
+									false);
 			visitor.visitInsn(IRETURN);
 			visitor.visitMaxs(2, 3);
 			visitor.visitEnd();
