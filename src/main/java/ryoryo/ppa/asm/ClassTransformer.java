@@ -72,7 +72,7 @@ public class ClassTransformer implements IClassTransformer, Opcodes
 		{
 			if(TARGET_METHOD.equals(FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(this.owner, name, desc)))
 			{
-				LoadingPlugin.LOGGER.info("Found canPlaceBlockAt: start transforming");
+				LoadingPlugin.LOGGER.info("Found: canPlaceBlockAt; start transforming");
 				return new CustomMethodVisitor(this.api, super.visitMethod(access, name, desc, signature, exceptions));
 			}
 
@@ -149,7 +149,7 @@ public class ClassTransformer implements IClassTransformer, Opcodes
 			visitor.visitVarInsn(ALOAD, 1);
 			visitor.visitVarInsn(ALOAD, 2);
 			visitor.visitMethodInsn(INVOKESTATIC,
-					"ryoryo.ppa.asm.ModHooks",
+					"ryoryo/ppa/asm/ModHooks",
 					"pumpkinHook",
 					Type.getMethodDescriptor(Type.BOOLEAN_TYPE,
 											Type.getObjectType("net/minecraft/world/World"),
