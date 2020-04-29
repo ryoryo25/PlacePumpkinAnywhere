@@ -91,6 +91,6 @@ jar {
 		//coremodのパスを指定する。
 		attributes FMLCorePlugin: 'ryoryo.ppa.asm.LoadingPlugin'
 		//今回はposlishedstone2が別で入っているためそれも読み込む。
-		attributes FMLCorePluginContainsFMLMod : 'true'
+		attributes FMLCorePluginContainsFMLMod : 'false'
     }
 }
