@@ -12,7 +12,8 @@ import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRema
 
 public class ClassTransformer implements IClassTransformer, Opcodes
 {
-	private static final String ASM_HOOKS = "ryoryo/ppa/asm/ModHooks";
+//	private static final String ASM_HOOKS = "ryoryo/ppa/asm/ASMHooks";
+	private static final String ASM_HOOKS = LoadingPlugin.toSlash(ASMHooks.class.getName());
 
 	private static final String TARGET_CLASS = "net.minecraft.block.BlockPumpkin";
 
