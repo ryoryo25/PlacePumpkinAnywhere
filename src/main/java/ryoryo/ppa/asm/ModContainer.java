@@ -13,14 +13,12 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-public class ModContainer extends DummyModContainer
-{
+public class ModContainer extends DummyModContainer {
 	private static final String VERSION_MAJOR = "GRADLE.VERSION_MAJOR";
 	private static final String VERSION_MINOR = "GRADLE.VERSION_MINOR";
 	private static final String VERSION_PATCH = "GRADLE.VERSION_PATCH";
 
-	public ModContainer()
-	{
+	public ModContainer() {
 		super(new ModMetadata());
 		ModMetadata meta = getMetadata();
 		meta.modId = "ppa";
@@ -36,29 +34,24 @@ public class ModContainer extends DummyModContainer
 	}
 
 	@Override
-	public boolean registerBus(EventBus bus, LoadController controller)
-	{
+	public boolean registerBus(EventBus bus, LoadController controller) {
 		bus.register(this);
 		return true;
 	}
 
 	@Subscribe
-	public void modConstruction(FMLConstructionEvent event)
-	{
+	public void modConstruction(FMLConstructionEvent event) {
 	}
 
 	@Subscribe
-	public void preInit(FMLPreInitializationEvent event)
-	{
+	public void preInit(FMLPreInitializationEvent event) {
 	}
 
 	@Subscribe
-	public void init(FMLInitializationEvent event)
-	{
+	public void init(FMLInitializationEvent event) {
 	}
 
 	@Subscribe
-	public void postInit(FMLPostInitializationEvent event)
-	{
+	public void postInit(FMLPostInitializationEvent event) {
 	}
 }
