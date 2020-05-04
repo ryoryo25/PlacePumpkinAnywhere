@@ -11,7 +11,6 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 
 public class ClassTransformer implements IClassTransformer, Opcodes {
-	// private static final String ASM_HOOKS = "ryoryo/ppa/asm/ASMHooks";
 	private static final String ASM_HOOKS = LoadingPlugin.toSlash(ASMHooks.class.getName());
 
 	private static final String TARGET_CLASS = "net.minecraft.block.BlockPumpkin";
@@ -21,11 +20,13 @@ public class ClassTransformer implements IClassTransformer, Opcodes {
 	}
 
 	/**
-	 * PrintWriter pw = null; try { pw = new
-	 * PrintWriter("D:/Desktop/trace.txt"); } catch(FileNotFoundException e) {
-	 * e.printStackTrace(); } TraceClassVisitor cv = new
-	 * TraceClassVisitor(writer, pw); reader.accept(cv,
-	 * ClassReader.EXPAND_FRAMES);
+	 * PrintWriter pw = null;
+	 * try {
+	 *     pw = new PrintWriter("D:/Desktop/trace.txt");
+	 * } catch(FileNotFoundException e) {
+	 *     e.printStackTrace();
+	 * }
+	 * TraceClassVisitor cv = new TraceClassVisitor(writer, pw); reader.accept(cv, ClassReader.EXPAND_FRAMES);
 	 *
 	 * これでバイトコードをファイルに出力できる．
 	 *
@@ -74,39 +75,53 @@ public class ClassTransformer implements IClassTransformer, Opcodes {
 	}
 
 	/**
-	 * public
-	 * canPlaceBlockAt(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)Z
-	 * L0 LINENUMBER 145 L0 ALOAD 1 ALOAD 2 INVOKEVIRTUAL
-	 * net/minecraft/world/World.getBlockState
-	 * (Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;
-	 * INVOKEINTERFACE net/minecraft/block/state/IBlockState.getBlock
-	 * ()Lnet/minecraft/block/Block; ALOAD 1 ALOAD 2 INVOKEVIRTUAL
-	 * net/minecraft/block/Block.isReplaceable
-	 * (Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Z
-	 * IFEQ L1 ALOAD 1 ALOAD 2 INVOKEVIRTUAL
-	 * net/minecraft/util/math/BlockPos.down
-	 * ()Lnet/minecraft/util/math/BlockPos; GETSTATIC
-	 * net/minecraft/util/EnumFacing.UP : Lnet/minecraft/util/EnumFacing;
-	 * INVOKEVIRTUAL net/minecraft/world/World.isSideSolid
-	 * (Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z IFEQ
-	 * L1 ICONST_1 GOTO L2 L1 FRAME FULL [net/minecraft/block/BlockPumpkin
-	 * net/minecraft/world/World net/minecraft/util/math/BlockPos] [] ICONST_0
-	 * L2 FRAME FULL [net/minecraft/block/BlockPumpkin net/minecraft/world/World
-	 * net/minecraft/util/math/BlockPos] [I] IRETURN L3 LOCALVARIABLE this
-	 * Lnet/minecraft/block/BlockPumpkin; L0 L3 0 LOCALVARIABLE worldIn
-	 * Lnet/minecraft/world/World; L0 L3 1 LOCALVARIABLE pos
-	 * Lnet/minecraft/util/math/BlockPos; L0 L3 2 MAXSTACK = 3 MAXLOCALS = 3
+	 * public canPlaceBlockAt(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)Z
+	 *  L0
+	 *   LINENUMBER 145 L0
+	 *   ALOAD 1
+	 *   ALOAD 2
+	 *   INVOKEVIRTUAL net/minecraft/world/World.getBlockState (Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;
+	 *   INVOKEINTERFACE net/minecraft/block/state/IBlockState.getBlock ()Lnet/minecraft/block/Block;
+	 *   ALOAD 1
+	 *   ALOAD 2
+	 *   INVOKEVIRTUAL net/minecraft/block/Block.isReplaceable (Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Z
+	 *   IFEQ L1
+	 *   ALOAD 1
+	 *   ALOAD 2
+	 *   INVOKEVIRTUAL net/minecraft/util/math/BlockPos.down ()Lnet/minecraft/util/math/BlockPos;
+	 *   GETSTATIC net/minecraft/util/EnumFacing.UP : Lnet/minecraft/util/EnumFacing;
+	 *   INVOKEVIRTUAL net/minecraft/world/World.isSideSolid (Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z
+	 *   IFEQ L1
+	 *   ICONST_1
+	 *   GOTO L2
+	 *  L1
+	 *   FRAME FULL [net/minecraft/block/BlockPumpkin net/minecraft/world/World net/minecraft/util/math/BlockPos] []
+	 *   ICONST_0
+	 *  L2
+	 *   FRAME FULL [net/minecraft/block/BlockPumpkin net/minecraft/world/World net/minecraft/util/math/BlockPos] [I]
+	 *   IRETURN
+	 *  L3
+	 *   LOCALVARIABLE this Lnet/minecraft/block/BlockPumpkin; L0 L3 0
+	 *   LOCALVARIABLE worldIn Lnet/minecraft/world/World; L0 L3 1
+	 *   LOCALVARIABLE pos Lnet/minecraft/util/math/BlockPos; L0 L3 2
+	 *   MAXSTACK = 3
+	 *   MAXLOCALS = 3
 	 *
 	 * これを下の物に書き換える．
 	 *
-	 * public
-	 * canPlaceBlockAt(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)Z
-	 * L0 LINENUMBER 32 L0 ALOAD 1 ALOAD 2 INVOKESTATIC
-	 * ryoryo/polishedstone/asm/PSHooks.pumpkinHook
-	 * (Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)Z IRETURN
-	 * L1 LOCALVARIABLE this Lryoryo/polishedstone/block/BlockBlackQuartz; L0 L1
-	 * 0 LOCALVARIABLE world Lnet/minecraft/world/World; L0 L1 1 LOCALVARIABLE
-	 * pos Lnet/minecraft/util/math/BlockPos; L0 L1 2 MAXSTACK = 2 MAXLOCALS = 3
+	 * public canPlaceBlockAt(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)Z
+	 *  L0
+	 *   LINENUMBER 32 L0
+	 *   ALOAD 1
+	 *   ALOAD 2
+	 *   INVOKESTATIC ryoryo/polishedstone/asm/PSHooks.pumpkinHook (Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)Z
+	 *   IRETURN
+	 *  L1
+	 *   LOCALVARIABLE this Lryoryo/polishedstone/block/BlockBlackQuartz; L0 L1 0
+	 *   LOCALVARIABLE world Lnet/minecraft/world/World; L0 L1 1
+	 *   LOCALVARIABLE pos Lnet/minecraft/util/math/BlockPos; L0 L1 2
+	 *   MAXSTACK = 2
+	 *   MAXLOCALS = 3
 	 *
 	 * @author Toyota
 	 *
