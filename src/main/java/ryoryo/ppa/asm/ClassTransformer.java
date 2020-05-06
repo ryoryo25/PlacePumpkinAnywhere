@@ -26,7 +26,8 @@ public class ClassTransformer implements IClassTransformer, Opcodes {
 	 * } catch(FileNotFoundException e) {
 	 *     e.printStackTrace();
 	 * }
-	 * TraceClassVisitor cv = new TraceClassVisitor(writer, pw); reader.accept(cv, ClassReader.EXPAND_FRAMES);
+	 * TraceClassVisitor cv = new TraceClassVisitor(writer, pw);
+	 * reader.accept(cv, ClassReader.EXPAND_FRAMES);
 	 *
 	 * これでバイトコードをファイルに出力できる．
 	 *
