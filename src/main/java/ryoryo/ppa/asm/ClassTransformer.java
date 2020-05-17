@@ -11,6 +11,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 
 public class ClassTransformer implements IClassTransformer, Opcodes {
+
 	private static final String ASM_HOOKS = LoadingPlugin.toSlash(ASMHooks.class.getName());
 
 	private static final String TARGET_CLASS = "net.minecraft.block.BlockPumpkin";
@@ -37,7 +38,8 @@ public class ClassTransformer implements IClassTransformer, Opcodes {
 		if(!TARGET_CLASS.equals(transformedName))
 			return basicClass;
 
-		LoadingPlugin.LOGGER.info("Found: " + transformedName + "; start transforming------------------");
+		LoadingPlugin.LOGGER.info("==================================================");
+		LoadingPlugin.LOGGER.info("-Found: " + transformedName + "; start transforming");
 
 		// byte配列を読み込み、利用しやすい形にする。
 		ClassReader reader = new ClassReader(basicClass);
@@ -46,7 +48,8 @@ public class ClassTransformer implements IClassTransformer, Opcodes {
 		reader.accept(new CustomVisitor(name, writer), ClassReader.EXPAND_FRAMES);
 		basicClass = writer.toByteArray();
 
-		LoadingPlugin.LOGGER.info("Finish transforming--------------------------------------");
+		LoadingPlugin.LOGGER.info("-Finish transforming");
+		LoadingPlugin.LOGGER.info("==================================================");
 
 		return basicClass;
 	}
@@ -67,7 +70,7 @@ public class ClassTransformer implements IClassTransformer, Opcodes {
 					|| TARGET_METHOD_DEOBF.equals(FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(this.owner, name, desc))
 					|| name.equals(TARGET_METHOD)
 					|| name.equals(TARGET_METHOD_DEOBF)) {
-				LoadingPlugin.LOGGER.info("Found: " + name + "; start transforming");
+				LoadingPlugin.LOGGER.info("--Found: " + name + "; start transforming");
 				return new CustomMethodVisitor(this.api, super.visitMethod(access, name, desc, signature, exceptions));
 			}
 
@@ -137,7 +140,7 @@ public class ClassTransformer implements IClassTransformer, Opcodes {
 
 		@Override
 		public void visitCode() {
-			LoadingPlugin.LOGGER.info("Replacing...");
+			LoadingPlugin.LOGGER.info("--Replacing...");
 			visitor.visitCode();
 			visitor.visitVarInsn(ALOAD, 1);
 			visitor.visitVarInsn(ALOAD, 2);
